@@ -17,7 +17,7 @@ Import and use the functions in your Python script:
 from dp import process, preview, chat
 ```
 
-Upload an 'example.txt' file containing English sentences to the stanza_gpt folder.<br>
+Upload an 'example.txt' file containing English sentences to the 'stanza_gpt' folder.<br>
 Specify the file path and the number of sentences to parse, and run the code.<br>
 If the number of sentences to parse is not specified, it defaults to 100,000.<br>
 ```python
