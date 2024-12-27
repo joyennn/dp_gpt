@@ -15,9 +15,23 @@ Install required library:
 Import and use the functions in your Python script:
 ```python
 from dp import process, preview, chat
+```
 
-# Example usage:
+Upload an 'example.txt' file containing English sentences to the stanza_gpt folder. 
+Specify the file path and the number of sentences to parse, and run the code.
+If the number of sentences to parse is not specified, it defaults to 100,000.
+```python
+process("example.txt", 50000)
+or
 process("example.txt")
-preview(1)
-chat("your_api_key")
+```
+
+Input a sentence ID in 'preview' function to view the dataframe of the sentence's dependency parsing results.
+```python
+preview(10)
+```
+
+Enter the GPT API key you received to interact with the dependency-parsed data in natural language.
+```python
+chat("your_gpt_api_key")
 ```
