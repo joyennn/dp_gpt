@@ -1,5 +1,5 @@
 # STANZA_GPT
-## How to Use `dp.py`
+## How to Use `stanza_gpt.py`
 
 Clone the repository on Google Colab:
 ```python
@@ -21,9 +21,9 @@ Upload an 'example.txt' file containing English sentences to the 'stanza_gpt' fo
 Specify the file path and the number of sentences to parse, and run the code.<br>
 If the number of sentences to parse is not specified, it defaults to 100,000.<br>
 ```python
-process("example.txt", 50000)
+dp("example.txt", 50000)
 or
-process("example.txt")
+dp("example.txt")
 ```
 
 Input a sentence ID in 'preview' function to view the dataframe of the sentence's dependency parsing results.
