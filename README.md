@@ -1,5 +1,5 @@
 # STANZA_GPT
-## How to Use `stanza_gpt.py`
+## How to use `stanza_gpt.py`
 
 Clone the repository on Google Colab:
 ```python
