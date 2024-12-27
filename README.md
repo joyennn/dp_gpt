@@ -6,7 +6,7 @@ Clone the repository on Google Colab:
 !git clone https://github.com/joyennn/stanza_gpt.git
 ```
 
-Install required library:
+Install required libraries:
 ```python
 %cd stanza_gpt
 !pip install -r requirements.txt
