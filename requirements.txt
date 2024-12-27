@@ -1,0 +1,4 @@
+stanza
+pandas
+tqdm
+langchain-openai
