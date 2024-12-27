@@ -14,7 +14,7 @@ Install required library:
 
 Import and use the functions in your Python script:
 ```python
-from dp import process, preview, chat
+from stanza_gpt import dp, preview, chat
 ```
 
 Upload an 'example.txt' file containing English sentences to the 'stanza_gpt' folder.<br>
