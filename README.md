@@ -2,7 +2,9 @@
 ## How to Use `dp.py`
 
 Clone the repository on Google Colab:
+```python
 !git clone https://github.com/joyennn/stanza_gpt.git
+```
 
 Install required library:
 ```python
