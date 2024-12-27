@@ -103,7 +103,7 @@ def load_data_in_chunks(file_path, chunk_size, max_lines=None):
         if buffer:
             yield buffer
 
-def process(file_path, max_lines=100000):
+def dp(file_path, max_lines=100000):
     """
     Dependency Parsing을 수행하고 진행 상황을 표시합니다.
 
