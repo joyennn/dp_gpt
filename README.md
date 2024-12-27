@@ -8,6 +8,7 @@ Clone the repository on Google Colab:
 
 Install required library:
 ```python
+%cd stanza_gpt
 !pip install -r requirements.txt
 ```
 
