@@ -158,7 +158,7 @@ def preview(s_id):
     if preview_df.empty:
         print(f"No sentence found for sentence ID {s_id}.")
     else:
-        print(f"\n<Dependency parsing results for Sentence ID {s_id}>")
+        print(f"\n=== Dependency parsing results for Sentence ID {s_id} === \n")
         print(preview_df)
 
 ### langchain ###
