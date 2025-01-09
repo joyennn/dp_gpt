@@ -137,6 +137,8 @@ def dp(file_path, max_lines=100000):
     print("\nProcessing finished successfully.")
     print(f"\nTotal sentences processed: {total_sentences}")
 
+    return global_df  # global_df를 반환
+
 
 def preview(s_id):
     """
