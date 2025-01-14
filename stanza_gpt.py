@@ -117,7 +117,7 @@ def dp(file_path, max_lines=100000):
     print(f"File path: {file_path}")
     print(f"Sentence limit: {max_lines if max_lines else '제한 없음'}")
 
-    chunk_size = 1000
+    chunk_size = 100
     num_processes = 8
     base_s_id = 1
 
