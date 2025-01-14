@@ -28,7 +28,7 @@ def init_pipeline():
         lang='en',
         processors='tokenize,pos,lemma,depparse',
         use_gpu=True,
-        batch_size=512,
+        batch_size=1024,
         logging_level='ERROR'  # Suppress unnecessary logs from Stanza
     )
 
