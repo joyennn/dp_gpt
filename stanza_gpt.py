@@ -305,7 +305,7 @@ def chat(api_key):
                 break
             if include_query.lower() == "exit":  # exit 입력 시 종료
                 print("Exiting chat...")
-                return
+                return [], []  # ✅ 빈 리스트 반환 (예외 방지)
             include_conditions.append(include_query)
 
         # 제외 조건 입력
@@ -316,7 +316,7 @@ def chat(api_key):
                 break
             if exclude_query.lower() == "exit":  # exit 입력 시 종료
                 print("Exiting chat...")
-                return
+                return [], []  # ✅ 빈 리스트 반환 (예외 방지)
             exclude_conditions.append(exclude_query)
 
         print("\nGenerating condition codes...")
@@ -343,14 +343,14 @@ def chat(api_key):
 
         if user_choice == "exit":  # exit 입력 시 종료
             print("Exiting chat...")
-            return
+            return [], []  # ✅ 빈 리스트 반환
 
         if user_choice in ["yes", "y"]:
             print(inclusion_codes)
             print(exclusion_codes)
             print("\nThe codes have been generated and saved. You can use them later in the extract() function.")
             print("The filter conditions are saved and ready to be applied.")
-            return inclusion_codes, exclusion_codes
+            return inclusion_codes, exclusion_codes  # ✅ 정상적으로 리스트 반환
         elif user_choice in ["no", "n"]:
             # 이전에 생성된 코드들 초기화
             inclusion_codes = []
@@ -358,11 +358,12 @@ def chat(api_key):
             include_conditions = []  # 포함 조건 리스트 초기화
             exclude_conditions = []  # 제외 조건 리스트 초기화
             print("\nPlease provide new inclusion and exclusion conditions.")
-            continue  # 재귀 호출 대신 루프를 계속 돌게 하여 조건 입력 계속 받기
+            continue  # 다시 루프 실행
         else:
             print("Invalid input. Please enter 'yes', 'no', or 'exit'.")
-            user_choice
 
+    # ✅ 기본적으로 빈 리스트 반환 (예외 발생 방지)
+    return inclusion_codes, exclusion_codes
 
 import warnings
 import numpy as np
