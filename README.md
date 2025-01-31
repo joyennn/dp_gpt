@@ -39,13 +39,13 @@ preview(df, 10)
 ### (4) Code generation with GPT API: ```chat()```
 Enter the GPT API key you received between the quotation marks.<br>
 Write prompts in natural language and get codes that GPT generates.<br>
-Ensure that you have final lists of conditional codes - ```inclusion``` & ```exclusion```
+Ensure that you have final lists of conditional codes - ```inclusion``` & ```exclusion```.
 ```python
 inclusion, exclusion = chat("your_gpt_api_key")
 ```
 <br><br>
 ### (5) Apply generated codes to the dependency parsed dataframe: ```extract()```
-Apply generated codes ```inclusion``` & ```exclusion``` to the dependency parsed dataframe ```df```<br>
+Apply generated codes ```inclusion``` & ```exclusion``` to the dependency parsed dataframe ```df```.<br>
 Review the final filtered sentences and enter a filename (.txt | .csv) to save them.
 ```python
 extract(df, inclusion, exclusion)
