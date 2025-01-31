@@ -373,7 +373,7 @@ warnings.filterwarnings("ignore", category=UserWarning)  # UserWarning 경고 �
 warnings.filterwarnings("ignore", category=DeprecationWarning)  # DeprecationWarning 경고 무시
 
 # 파일을 불러오고 필터링 조건에 사용
-def extract(df):
+def extract(df, inclusion_codes, exclusion_codes):
     """
     inclusion_codes와 exclusion_codes에서 생성된 조건을 이용하여 데이터를 필터링합니다.
     필터링된 데이터를 s_id 기준으로 저장합니다.
@@ -384,7 +384,7 @@ def extract(df):
     Returns:
         pd.DataFrame: 필터링된 데이터프레임
     """
-    global inclusion_codes, exclusion_codes
+    # global inclusion_codes, exclusion_codes
 
     sentences = []
     filtered_df = df.copy()  # df를 복사하여 시작
@@ -393,12 +393,30 @@ def extract(df):
     # 포함 조건 적용
     for include_code in inclusion_codes:
         try:
-          if 'df[(' or 'df[df' in include_code:
+          if 'df[(' in include_code or 'df[df' in include_code:
               include_code = include_code.replace('df[(', 'df.loc[(')
               include_code = include_code.replace('df[df', 'df.loc[df')
+              # filtered_df = filtered_df.groupby('s_id').apply(
+              #               lambda group: [eval(include_code.replace('df', 'group'))]
+              #               ).reset_index()
+
+              # #apply() 내부에서 컬럼이 유지되는지 확인
+              # filtered_df = filtered_df.groupby('s_id').apply(
+              #               lambda group: print(group.columns) or eval(include_code.replace('df', 'group'))
+              #               ).reset_index()
+              # #group이 DataFrame인지 확인
+              # filtered_df = filtered_df.groupby('s_id').apply(
+              #               lambda group: print(type(group)) or eval(include_code.replace('df', 'group'))
+              #               ).reset_index()
+              #filtered_df의 컬럼이 groupby() 후에도 유지되는지 확인
+              print("Before groupby:", filtered_df.columns)
               filtered_df = filtered_df.groupby('s_id').apply(
-                            lambda group: [eval(include_code.replace('df', 'group'))]
+                            lambda group: eval(include_code.replace('df', 'group'))
                             ).reset_index()
+              print("After groupby:", filtered_df.columns)
+
+
+
 
           else:
             filtered_df = filtered_df.groupby('s_id').apply(
@@ -511,3 +529,4 @@ def extract(df):
 
         except Exception as e:
             print(f"Error saving the file: {e}")
+
