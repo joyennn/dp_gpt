@@ -396,24 +396,9 @@ def extract(df, inclusion_codes, exclusion_codes):
           if 'df[(' in include_code or 'df[df' in include_code:
               include_code = include_code.replace('df[(', 'df.loc[(')
               include_code = include_code.replace('df[df', 'df.loc[df')
-              # filtered_df = filtered_df.groupby('s_id').apply(
-              #               lambda group: [eval(include_code.replace('df', 'group'))]
-              #               ).reset_index()
-
-              # #apply() 내부에서 컬럼이 유지되는지 확인
-              # filtered_df = filtered_df.groupby('s_id').apply(
-              #               lambda group: print(group.columns) or eval(include_code.replace('df', 'group'))
-              #               ).reset_index()
-              # #group이 DataFrame인지 확인
-              # filtered_df = filtered_df.groupby('s_id').apply(
-              #               lambda group: print(type(group)) or eval(include_code.replace('df', 'group'))
-              #               ).reset_index()
-              #filtered_df의 컬럼이 groupby() 후에도 유지되는지 확인
-              print("Before groupby:", filtered_df.columns)
               filtered_df = filtered_df.groupby('s_id').apply(
-                            lambda group: eval(include_code.replace('df', 'group'))
+                            lambda group: [eval(include_code.replace('df', 'group'))]
                             ).reset_index()
-              print("After groupby:", filtered_df.columns)
 
 
 
