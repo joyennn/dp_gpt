@@ -164,6 +164,10 @@ import os
 import re
 import pandas as pd
 from langchain_openai import ChatOpenAI
+import warnings
+
+warnings.filterwarnings("ignore", category=UserWarning)  # UserWarning 경고 무시
+warnings.filterwarnings("ignore", category=DeprecationWarning)  # DeprecationWarning 경고 무시
 
 
 def query_data(query, api_key):
@@ -278,9 +282,9 @@ def chat(api_key):
     global chat_api_key, inclusion_codes, exclusion_codes
     chat_api_key = api_key  # API 키를 전역으로 설정
 
-    if global_df.empty:
-        print("데이터가 없습니다. 먼저 dp()를 실행하여 데이터를 로드하세요.")
-        return
+    # if global_df.empty:
+    #     print("데이터가 없습니다. 먼저 dp()를 실행하여 데이터를 로드하세요.")
+    #     return
 
     print("=== Chat Interface ===")
 
@@ -344,9 +348,9 @@ def chat(api_key):
         if user_choice in ["yes", "y"]:
             print(inclusion_codes)
             print(exclusion_codes)
-            print("\nFilter function usage: The filtering codes have been generated and saved. You can use them later in the filter function.")
+            print("\nThe codes have been generated and saved. You can use them later in the extract() function.")
             print("The filter conditions are saved and ready to be applied.")
-            return  # 채팅 종료
+            return inclusion_codes, exclusion_codes
         elif user_choice in ["no", "n"]:
             # 이전에 생성된 코드들 초기화
             inclusion_codes = []
@@ -358,6 +362,7 @@ def chat(api_key):
         else:
             print("Invalid input. Please enter 'yes', 'no', or 'exit'.")
             user_choice
+
 
 import warnings
 import numpy as np
