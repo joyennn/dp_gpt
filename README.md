@@ -47,7 +47,7 @@ Ensure that you have final lists of conditional codes - ```inclusion``` & ```exc
 inclusion, exclusion = chat("your_gpt_api_key")
 ```
 <br><br>
-### (5) Apply generated codes to the dependency parsed dataframe: ```extract()```
+### (5) Apply generated codes to the dependency parsed dataframe: ```apply()```
 Apply generated codes ```inclusion``` & ```exclusion``` to the dependency parsed dataframe ```df```.<br>
 Review the final filtered sentences and enter a filename (.txt | .csv) to save them.
 ```python
