@@ -1,4 +1,5 @@
 stanza
 pandas
 tqdm
-langchain-openai
+langchain_community
+openai==0.28
