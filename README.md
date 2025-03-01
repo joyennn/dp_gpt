@@ -1,7 +1,6 @@
-# STANZA_GPT
-## How to use `stanza_gpt.py`
+# How to use `stanza_gpt.py`
 
-### (1) Initial setting
+## Initial setting
 Clone the repository on Google Colab.
 ```python
 !git clone https://github.com/joyennn/stanza_gpt.git
@@ -14,11 +13,15 @@ Install required libraries.
 ```
 
 Import the functions from 'stanza_gpt.'<br>
-There are 4 functions to use : ```dp```, ```preview```, ```chat```, ```extract```
+There are 5 functions to use : ```size```, ```dp```, ```preview```, ```chat```, ```apply```
 ```python
-from stanza_gpt import dp, preview, chat, extract
+from stanza_gpt import size, dp, preview, chat, apply
 ```
 <br><br>
+## Functions
+
+### (1) Checking file size: ```size()```
+
 ### (2) Dependency parsing: ```dp()```
 Upload an 'example.txt' file containing English sentences to the 'stanza_gpt' folder.<br>
 Specify the file path and the number of sentences to parse, and run the code.
