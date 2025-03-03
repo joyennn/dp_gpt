@@ -1,21 +1,21 @@
-# How to use `stanza_gpt.py`
+# How to use `DP-GPT.py`
 
 ## Initial setting
 Clone the repository on Google Colab.
 ```python
-!git clone https://github.com/joyennn/stanza_gpt.git
+!git clone https://github.com/joyennn/dp-gpt.git
 ```
 
 Install required libraries.
 ```python
-%cd stanza_gpt
+%cd dp-gpt
 !pip install -r requirements.txt
 ```
 
-Import the functions from 'stanza_gpt.'<br>
+Import the functions from 'dp-gpt.'<br>
 There are 5 functions to use : ```size```, ```dp```, ```preview```, ```chat```, ```apply```
 ```python
-from stanza_gpt import size, dp, preview, chat, apply
+from dp-gpt import size, dp, preview, chat, apply
 ```
 <br><br>
 ## Functions
