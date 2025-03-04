@@ -112,7 +112,7 @@ Review the final filtered sentences and enter a filename (.txt | .csv) to save t
 ```python
 apply(df, inclusion, exclusion)
 ```
-Multiple df and inclusion & exclusion variables are used as follows:
+Multiple ```df``` and ```inclusion``` & ```exclusion``` variables are used as follows.
 ```python
 apply(df1, inclusion, exclusion)
 apply(df2, inclusion, exclusion)
