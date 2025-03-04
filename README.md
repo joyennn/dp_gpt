@@ -19,7 +19,7 @@ from dp_gpt import size, dp, preview, chat, apply
 ```
 
 The raw data file to be filtered must be a ```.txt``` file where each line contains an English sentence.<br>
-If additional files are required for analysis, they must also be ```.txt``` files, with words, phrases, or sentences separated by a line.<br>
+Additional files for analysis must also be ```.txt``` files, with words, phrases, or sentences separated by a line.<br>
 All required files should be uploaded in the ```dp_gpt``` folder.
 
 <br>
