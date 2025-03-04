@@ -31,6 +31,7 @@ If the raw data file you uploaded is named ```example.txt```, you can check the 
 ```python
 size("example.txt")
 ```
+<br>
 
 ### (2) Dependency parsing: ```dp()```
 The raw data is dependency-parsed and stored in the df variable as a DataFrame.<br>
@@ -38,22 +39,18 @@ When only the filename is provided as an argument, the parser will process up to
 ```python
 df = dp("example.txt")
 ```
-
 If a number is specified with the file, the parser will process sentences from the beginning of the file up to the given number.
 ```python
 df = dp("example.txt", 50000)
 ```
-
 If two numbers are specified with the file, the parser will process sentences from the first number (start) to the second number (end).
 ```python
 df = dp("example.txt", 50001, 60000)
 ```
-
 If a number and ```None``` are specified with the file, the parser will process sentences from the given number to the end.
 ```python
 df = dp("example.txt", 60001, None)
 ```
-
 To process more than 100,000 sentences, assign each parsed portion to different variables.
 ```python
 df1 = dp("example.txt", 100000)
@@ -62,23 +59,71 @@ df3 = dp("example.txt", 200001, 300000)
 df4 = dp("example.txt", 300001, None)
 ```
 
+<br>
+
 ### (3) Preview the dependency parsed dataframe: ```preview()```
 After ```dp()```, you can input a variable name and a sentence number to retrieve the parsed result of that specific sentence.<br>
 The result will be displayed in DataFrame format.
 ```python
 preview(df, 10)
 ```
+
+<br>
+
 ### (4) Code generation with GPT API: ```chat()```
-Enter the GPT API key you received between the quotation marks.<br>
-Write prompts in natural language and get codes that GPT generates.<br>
-Ensure that you have final lists of conditional codes - ```inclusion``` & ```exclusion```.
+Using the GPT API, the system generates code to filter a DataFrame based on natural language query.
+When a chat session begins, the user inputs commands specifying conditions for inclusion and exclusion separately.
+The generated code is assigned to ```inclusion``` & ```exclusion``` variables, respectively.
 ```python
 inclusion, exclusion = chat("your_gpt_api_key")
 ```
-<br><br>
+It is also possible to create multiple conditions.
+```python
+inclusion1, exclusion1 = chat("your_gpt_api_key")
+inclusion2, exclusion2 = chat("your_gpt_api_key")
+```
+
+<br>
+
+***
+### *** The structure of ```chat()``` ***<br>
+#### Inclusion
+- Input conditions for filtering sentences for inclusion. <br>
+- Multiple inclusion conditions can be provided. 
+- To finish this step and proceed to the next stage, press 'Enter' on an input space.
+#### Exclusion
+- Input conditions for filtering sentences for exclusion. <br>
+- Multiple exclusion conditions can be provided. 
+- To finish this step and proceed to the next stage, press 'Enter' on an input space.
+#### Generating code
+- Based on the provided conditions, the system generates and displays the code.
+- If you respond with "yes" or "y"  to the question asking whether to save the generated code, the code is stored in the respective variables.
+- If you responds with "no" or "n" to this question, the chat() process restarts from the beginning without saving any previous records.
+#### Note
+- "Exit" will terminate the chat at any steps.
+- "Reset" will reset the chat to its initial state at any steps.
+***
+
+<br>
+
 ### (5) Apply generated codes to the dependency parsed dataframe: ```apply()```
-Apply generated codes ```inclusion``` & ```exclusion``` to the dependency parsed dataframe ```df```.<br>
+Generated codes ```inclusion``` & ```exclusion``` are applied to the dependency parsed dataframe ```df```.<br>
 Review the final filtered sentences and enter a filename (.txt | .csv) to save them.
 ```python
-extract(df, inclusion, exclusion)
+apply(df, inclusion, exclusion)
+```
+Multiple df and inclusion & exclusion variables are used as follows:
+```python
+apply(df1, inclusion, exclusion)
+apply(df2, inclusion, exclusion)
+apply(df3, inclusion, exclusion)
+apply(df4, inclusion, exclusion)
+```
+```python
+apply(df, inclusion1, exclusion1)
+apply(df, inclusion2, exclusion2)
+```
+```python
+apply(df1, inclusion1, exclusion1)
+apply(df2, inclusion2, exclusion2)
 ```
