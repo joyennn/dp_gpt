@@ -1,4 +1,4 @@
-# How to use `dp_gpt.py`
+# How to use `dp_gpt.py`
 
 ## Initial setting
 Clone the repository on Google Colab.
