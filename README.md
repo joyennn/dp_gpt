@@ -90,7 +90,7 @@ inclusion2, exclusion2 = chat("your_gpt_api_key")
 #### Inclusion
 - Input conditions for filtering sentences for inclusion. <br>
 - Multiple inclusion conditions can be provided. 
-- To finish this step and proceed to the next stage, press 'Enter' on an input space.
+- To finish this step and proceed to the next stage, press "Enter" on an input space.
 #### Exclusion
 - Input conditions for filtering sentences for exclusion. <br>
 - Multiple exclusion conditions can be provided. 
