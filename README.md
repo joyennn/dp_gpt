@@ -1,26 +1,26 @@
-# How to use `DP-GPT.py`
+# How to use `dp_gpt.py`
 
 ## Initial setting
 Clone the repository on Google Colab.
 ```python
-!git clone https://github.com/joyennn/dp-gpt.git
+!git clone https://github.com/joyennn/dp_gpt.git
 ```
 
 Install required libraries.
 ```python
-%cd dp-gpt
+%cd dp_gpt
 !pip install -r requirements.txt
 ```
 
-Import the functions from ```dp-gpt```.<br>
+Import the functions from ```dp_gpt```.<br>
 There are 5 functions to use : ```size```, ```dp```, ```preview```, ```chat```, ```apply```
 ```python
-from dp-gpt import size, dp, preview, chat, apply
+from dp_gpt import size, dp, preview, chat, apply
 ```
 
 The raw data file to be filtered must be a ```.txt``` file where each line contains an English sentence.<br>
 If additional files are required for analysis, they must also be ```.txt``` files, with words, phrases, or sentences separated by a line.<br>
-All required files should be uploaded in the ```dp-gpt``` folder.
+All required files should be uploaded in the ```dp_gpt``` folder.
 
 <br>
 
