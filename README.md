@@ -35,7 +35,8 @@ size("example.txt")
 
 ### (2) Dependency parsing: ```dp()```
 The raw data is dependency-parsed and stored in the df variable as a DataFrame.<br>
-When only the filename is provided as an argument, the parser will process up to 100,000 sentences by default.
+When only the filename is provided as an argument, the parser will process up to 100,000 sentences by default.<br>
+If the runtime type in Colab is set to GPU, the processing speed increases. If not set, it defaults to CPU processing.
 ```python
 df = dp("example.txt")
 ```
