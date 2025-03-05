@@ -105,11 +105,35 @@ inclusion2, exclusion2 = chat("your_gpt_api_key")
 - "Reset" will reset the chat to its initial state at any steps.
 ***
 
+## Guide to customizing the code
+Sometimes, directly modifying the generated code is simpler than regenerating it from scratch.<br>
+In such cases, you can first save the generated code in lists (```inclusion``` & ```exclusion```) and modify it as follows.
+### Remove
+To remove a code from a list, use ```del``` followed by the list name and the index. (Note that indexing starts from 0.)<br>
+For example, to remove the 3rd code from the ```inclusion``` list, use the following command:
+```python
+del list[index]
+
+del inclusion[2]  #example
+```
+### Add
+To add a new code (value) to a list, use ```append```. (The code should be enclosed in quotes.)<br>
+For example, to add a value like ```df['deprel'] == 'root'``` to ```inclusion``` list, use the following command:
+```python
+list.append(value)
+
+inclusion.append("df['deprel'] == 'root'")  #example
+```
+### Replace
+To replace an existing code with a new one or modify part of the code, you can update the value at a specific index.<br>
+For example, if the 3rd code in ```inclusion``` contains a period puctuation (e.g., ```df['deprel'] == 'root'.```), it may be better to remove the period rather than generating a new code.
+```python
+list[index] = new_value
+
+inclusion[2] = "df['deprel'] == 'root'"
+```
+
 <br>
-
-#### Guide to customizing the code
-Guide to Customizing the Code
-
 
 ### (5) Apply generated code to the dependency parsed dataframe: ```apply()```
 Generated codes ```inclusion``` & ```exclusion``` are applied to the dependency parsed dataframe ```df```.<br>
