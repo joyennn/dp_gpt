@@ -107,6 +107,10 @@ inclusion2, exclusion2 = chat("your_gpt_api_key")
 
 <br>
 
+#### Guide to customizing the code
+Guide to Customizing the Code
+
+
 ### (5) Apply generated code to the dependency parsed dataframe: ```apply()```
 Generated codes ```inclusion``` & ```exclusion``` are applied to the dependency parsed dataframe ```df```.<br>
 Review the final filtered sentences and enter a filename (.txt | .csv) to save them.
