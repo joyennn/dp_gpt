@@ -238,8 +238,9 @@ def apply(df, inclusion, exclusion):
         except Exception as e:
             raise ValueError(f"Error reading {file_name}: {e}")
 
-    
-    filtered_df_list = []
+    # ✅ 1️⃣ Inclusion 조건 적용 (각 코드가 하나라도 True인 문장만 유지)
+    inclusion_s_ids_list = []  # 각 조건을 만족하는 s_id 저장
+
     for inclusion_code in inclusion:
         eval_globals = {"pd": pd}
         if ".txt" in inclusion_code:
@@ -248,41 +249,43 @@ def apply(df, inclusion, exclusion):
             result = eval(inclusion_code, {**eval_globals, "df": df})
         except Exception as e:
             raise ValueError(f"Error evaluating inclusion code '{inclusion_code}': {e}")
+        
         if isinstance(result, pd.Series) and result.dtype == bool:
-            result = result.reindex(df.index, fill_value=False)
-            filtered_df = df[result]
-        elif isinstance(result, pd.DataFrame):
-            filtered_df = result
+            result = result.reindex(df.index, fill_value=False)  # ✅ 전체 df 크기와 맞춤
+            inclusion_s_ids = df.loc[result, "s_id"].unique()  # ✅ True인 s_id 추출
+            inclusion_s_ids_list.append(set(inclusion_s_ids))  # ✅ 리스트에 추가
         else:
-            raise ValueError("Inclusion code did not return a valid DataFrame or Boolean Series.")
-        filtered_df_list.append(filtered_df)
+            raise ValueError("Inclusion code must return a Boolean Series.")
 
-    common_s_ids = set.intersection(*[set(temp_df['s_id']) for temp_df in filtered_df_list])  
-    final_filtered_df_list = [temp_df[temp_df['s_id'].isin(common_s_ids)] for temp_df in filtered_df_list]
-    final_filtered_df = pd.concat(final_filtered_df_list).drop_duplicates(subset=['s_id'])
+    # ✅ 모든 Inclusion 조건을 만족하는 s_id만 남김 (즉, 모든 조건에서 True였던 s_id만 유지)
+    if inclusion_s_ids_list:
+        final_inclusion_s_ids = set.intersection(*inclusion_s_ids_list)  # ✅ 모든 조건을 만족하는 s_id
+    else:
+        final_inclusion_s_ids = set()  # ✅ Inclusion 코드가 없으면 빈 집합
 
+    # ✅ Inclusion 조건을 만족하는 문장만 필터링
+    inclusion_filtered_df = df[df["s_id"].isin(final_inclusion_s_ids)]
 
-    excluded_df_list = []
+    # ✅ 2️⃣ Exclusion 처리 (하나라도 True면 배제)
+    exclusion_s_ids = set()
+
     for exclusion_code in exclusion:
         eval_globals = {"pd": pd}
         if ".txt" in exclusion_code:
             eval_globals["load_list"] = load_list
         try:
-            result = eval(exclusion_code, {**eval_globals, "df": df})  
+            result = eval(exclusion_code, {**eval_globals, "df": inclusion_filtered_df})  
         except Exception as e:
             raise ValueError(f"Error evaluating exclusion code '{exclusion_code}': {e}")
+        
         if isinstance(result, pd.Series) and result.dtype == bool:
-            result = result.reindex(df.index, fill_value=False)
-            excluded_df = df[result]
-        elif isinstance(result, pd.DataFrame):
-            excluded_df = result
+            result = result.reindex(inclusion_filtered_df.index, fill_value=False)  # ✅ 전체 df 크기와 맞춤
+            exclusion_s_ids.update(inclusion_filtered_df.loc[result, "s_id"].unique())  # ✅ True인 s_id 추가
         else:
-            raise ValueError("Exclusion code did not return a valid DataFrame or Boolean Series.")
-        excluded_df_list.append(excluded_df)
+            raise ValueError("Exclusion code must return a Boolean Series.")
 
-    if excluded_df_list:
-        excluded_s_ids = set.union(*[set(temp_df['s_id']) for temp_df in excluded_df_list])  
-        final_filtered_df = final_filtered_df[~final_filtered_df['s_id'].isin(excluded_s_ids)] 
+    # ✅ Exclusion을 만족하는 문장 제거
+    final_filtered_df = inclusion_filtered_df[~inclusion_filtered_df["s_id"].isin(exclusion_s_ids)]
 
     selected_sids = final_filtered_df['s_id'].unique()
     selected_tokens = df[df['s_id'].isin(selected_sids)]
