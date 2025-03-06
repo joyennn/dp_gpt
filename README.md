@@ -9,7 +9,7 @@ Clone the repository on Google Colab.
 Install required libraries.
 ```python
 %cd dp_gpt
-!pip install -r requirements.txt
+!pip install -r requirements.txt --quiet
 ```
 
 Import the functions from ```dp_gpt```.<br>
