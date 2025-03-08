@@ -238,56 +238,61 @@ def apply(df, inclusion, exclusion):
         except Exception as e:
             raise ValueError(f"Error reading {file_name}: {e}")
 
-    # ✅ 1️⃣ Inclusion 조건 적용 (각 코드가 하나라도 True인 문장만 유지)
-    inclusion_s_ids_list = []  # 각 조건을 만족하는 s_id 저장
+    # 1. Inclusion 조건: s_id 그룹별 평가
+    valid_s_ids = set()  # inclusion 조건을 모두 만족하는 s_id 저장용 집합
+    grouped = df.groupby("s_id")  # s_id 기준으로 그룹화
+    for s_id, group in grouped:
+        satisfies_all = True  # 현재 그룹이 모든 inclusion 조건을 만족하는지 추적하는 변수
+        for inclusion_code in inclusion:
+            eval_globals = {"pd": pd}
+            if ".txt" in inclusion_code:
+                eval_globals["load_list"] = load_list
+            try:
+                # 현재 그룹(group)에 대해 inclusion 조건 평가
+                result = eval(inclusion_code, {**eval_globals, "df": group})
+            except Exception as e:
+                raise ValueError(f"Error evaluating inclusion code '{inclusion_code}' for s_id {s_id}: {e}")
+            # 평가 결과가 Boolean Series여야 함
+            if isinstance(result, pd.Series) and result.dtype == bool:
+                # 그룹 내 어느 행이라도 조건을 만족하면 True로 간주
+                if not result.any():
+                    satisfies_all = False  # 하나라도 만족하는 행이 없으면 해당 그룹은 포함 대상 아님
+                    break
+            else:
+                raise ValueError("Inclusion code must return a Boolean Series.")
+        if satisfies_all:
+            valid_s_ids.add(s_id)  # 모든 inclusion 조건을 만족하면 해당 s_id를 저장
 
-    for inclusion_code in inclusion:
-        eval_globals = {"pd": pd}
-        if ".txt" in inclusion_code:
-            eval_globals["load_list"] = load_list
-        try:
-            result = eval(inclusion_code, {**eval_globals, "df": df})
-        except Exception as e:
-            raise ValueError(f"Error evaluating inclusion code '{inclusion_code}': {e}")
-        
-        if isinstance(result, pd.Series) and result.dtype == bool:
-            result = result.reindex(df.index, fill_value=False)  # ✅ 전체 df 크기와 맞춤
-            inclusion_s_ids = df.loc[result, "s_id"].unique()  # ✅ True인 s_id 추출
-            inclusion_s_ids_list.append(set(inclusion_s_ids))  # ✅ 리스트에 추가
-        else:
-            raise ValueError("Inclusion code must return a Boolean Series.")
+    # inclusion 조건을 만족하는 그룹의 데이터만 추출
+    inclusion_filtered_df = df[df["s_id"].isin(valid_s_ids)]
 
-    # ✅ 모든 Inclusion 조건을 만족하는 s_id만 남김 (즉, 모든 조건에서 True였던 s_id만 유지)
-    if inclusion_s_ids_list:
-        final_inclusion_s_ids = set.intersection(*inclusion_s_ids_list)  # ✅ 모든 조건을 만족하는 s_id
-    else:
-        final_inclusion_s_ids = set()  # ✅ Inclusion 코드가 없으면 빈 집합
+    # 2. Exclusion 조건: s_id 그룹별 평가
+    final_s_ids = set()  # exclusion 조건에서 걸러지지 않은 s_id 저장용 집합
+    grouped_inclusion = inclusion_filtered_df.groupby("s_id")
+    for s_id, group in grouped_inclusion:
+        exclude_group = False  # 현재 그룹이 배제 조건에 걸리는지 여부
+        for exclusion_code in exclusion:
+            eval_globals = {"pd": pd}
+            if ".txt" in exclusion_code:
+                eval_globals["load_list"] = load_list
+            try:
+                # 현재 그룹(group)에 대해 exclusion 조건 평가
+                result = eval(exclusion_code, {**eval_globals, "df": group})
+            except Exception as e:
+                raise ValueError(f"Error evaluating exclusion code '{exclusion_code}' for s_id {s_id}: {e}")
+            if isinstance(result, pd.Series) and result.dtype == bool:
+                # 그룹 내 어느 행이라도 조건을 만족하면 그룹 전체를 배제
+                if result.any():
+                    exclude_group = True
+                    break
+            else:
+                raise ValueError("Exclusion code must return a Boolean Series.")
+        if not exclude_group:
+            final_s_ids.add(s_id)  # 배제 조건에 걸리지 않은 그룹의 s_id 저장
 
-    # ✅ Inclusion 조건을 만족하는 문장만 필터링
-    inclusion_filtered_df = df[df["s_id"].isin(final_inclusion_s_ids)]
-
-    # ✅ 2️⃣ Exclusion 처리 (하나라도 True면 배제)
-    exclusion_s_ids = set()
-
-    for exclusion_code in exclusion:
-        eval_globals = {"pd": pd}
-        if ".txt" in exclusion_code:
-            eval_globals["load_list"] = load_list
-        try:
-            result = eval(exclusion_code, {**eval_globals, "df": inclusion_filtered_df})  
-        except Exception as e:
-            raise ValueError(f"Error evaluating exclusion code '{exclusion_code}': {e}")
-        
-        if isinstance(result, pd.Series) and result.dtype == bool:
-            result = result.reindex(inclusion_filtered_df.index, fill_value=False)  # ✅ 전체 df 크기와 맞춤
-            exclusion_s_ids.update(inclusion_filtered_df.loc[result, "s_id"].unique())  # ✅ True인 s_id 추가
-        else:
-            raise ValueError("Exclusion code must return a Boolean Series.")
-
-    # ✅ Exclusion을 만족하는 문장 제거
-    final_filtered_df = inclusion_filtered_df[~inclusion_filtered_df["s_id"].isin(exclusion_s_ids)]
-
-    selected_sids = final_filtered_df['s_id'].unique()
+    # 최종적으로 inclusion과 exclusion 조건을 모두 반영한 결과 생성
+    final_df = df[df["s_id"].isin(final_s_ids)]
+    selected_sids = final_df['s_id'].unique()
     selected_tokens = df[df['s_id'].isin(selected_sids)]
 
     final_sentences = []
