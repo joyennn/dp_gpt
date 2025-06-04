@@ -228,7 +228,12 @@ def condition_to_code(conditions, api_key):
               {query}
     """
 
-    llm = ChatOpenAI(temperature=0, openai_api_key=api_key, max_tokens=300)
+    #llm = ChatOpenAI(temperature=0, openai_api_key=api_key, max_tokens=300)
+    llm = ChatOpenAI(
+    model_name="gpt-4o",  
+    temperature=0,
+    openai_api_key=api_key
+    )
     messages = [
         SystemMessage(content="You are a helpful assistant that generates error-free Python code."),
         HumanMessage(content=prompt)
