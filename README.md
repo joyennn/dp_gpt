@@ -94,7 +94,8 @@ inclusion2, exclusion2 = chat("your_gpt_api_key")
 ### *** The structure of ```chat()``` ***<br>
 #### Inclusion
 - Input conditions for filtering sentences for inclusion. <br>
-- Multiple inclusion conditions can be provided. 
+- Multiple inclusion conditions can be provided.
+- Sentences can be filtered based on word lists from external ```.txt``` files.
 - To finish this step and proceed to the next stage, press "Enter" on an input space.
 #### Exclusion
 - Input conditions for filtering sentences for exclusion. <br>
