@@ -24,7 +24,84 @@ def size(filename):
 
 ##### dependency parsing #####
 
-def dp(filename, *args):
+# def dp(filename, *args):
+#     if len(args) == 0:
+#         start = 1
+#         end = 100000
+#     elif len(args) == 1:
+#         start = 1
+#         end = args[0]
+#     elif len(args) == 2:
+#         start = args[0]
+#         end = args[1]
+#     else:
+#         raise ValueError("The dp() function accepts a maximum of three arguments: filename, start, and end.")
+
+#     with open(filename, 'r', encoding='utf-8') as f:
+#         lines = f.read().splitlines()
+
+#     if end is None:
+#         selected_lines = lines[start - 1:]
+#     else:
+#         selected_lines = lines[start - 1 : end]
+
+#     all_tokens = []
+
+#     stanza.download('en', verbose=False)
+#     nlp = stanza.Pipeline(lang='en',
+#                           processors='tokenize,pos,lemma,depparse',
+#                           use_gpu=True,
+#                           verbose=False)
+
+#     for idx, sentence in enumerate(tqdm(selected_lines, desc="Dependency Parsing"), start=start):
+#         doc = nlp(sentence)
+#         doc_dict = doc.to_dict()
+#         for sentence_data in doc_dict:
+#             for token in sentence_data:
+#                 new_token = {"s_id": idx, **token}
+#                 all_tokens.append(new_token)
+
+#     total_sentences = len(selected_lines)
+#     print(f"\n\nA total of {total_sentences} sentences have been processed.")
+#     print(f"Processed sentences from {start} to {start + total_sentences - 1}.")
+
+#     df = pd.DataFrame(all_tokens)
+#     df = df.drop(columns=['feats', 'misc'], errors='ignore')
+#     df = df.dropna(subset=['head'])
+#     df['head'] = df['head'].astype(int)
+
+#     return df
+
+
+def dp(input_data, *args):
+    stanza.download('en', verbose=False)
+    nlp = stanza.Pipeline(lang='en',
+                          processors='tokenize,pos,lemma,depparse',
+                          use_gpu=True,
+                          verbose=False)
+
+    # (1) 단일 문장 처리
+    if not input_data.endswith(".txt"):
+        sentence = input_data
+        doc = nlp(sentence)
+        doc_dict = doc.to_dict()
+
+        tokens = []
+        for sentence_data in doc_dict:
+            for token in sentence_data:
+                tokens.append(token)
+
+        df = pd.DataFrame(tokens)
+        df = df.drop(columns=['feats', 'misc'], errors='ignore')
+        df = df.dropna(subset=['head'])
+        df['head'] = df['head'].astype(int)
+
+        print("\n[Dependency Parsing Result for Input Sentence:]\n")
+        print(df)
+        return df
+
+    # (2) 파일 처리
+    filename = input_data
     if len(args) == 0:
         start = 1
         end = 100000
@@ -46,13 +123,6 @@ def dp(filename, *args):
         selected_lines = lines[start - 1 : end]
 
     all_tokens = []
-
-    stanza.download('en', verbose=False)
-    nlp = stanza.Pipeline(lang='en',
-                          processors='tokenize,pos,lemma,depparse',
-                          use_gpu=True,
-                          verbose=False)
-
     for idx, sentence in enumerate(tqdm(selected_lines, desc="Dependency Parsing"), start=start):
         doc = nlp(sentence)
         doc_dict = doc.to_dict()
