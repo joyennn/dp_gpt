@@ -98,7 +98,7 @@ def dp(input_data, *args):
 
         print("\n[Dependency Parsing Result for Input Sentence:]\n")
         print(df)
-        return df
+        # return df
 
     # (2) 파일 처리
     filename = input_data
