@@ -99,7 +99,8 @@ inclusion2, exclusion2 = chat("your_gpt_api_key")
 - To finish this step and proceed to the next stage, press "Enter" on an input space.
 #### Exclusion
 - Input conditions for filtering sentences for exclusion. <br>
-- Multiple exclusion conditions can be provided. 
+- Multiple exclusion conditions can be provided.
+- Sentences can be filtered based on word lists from external ```.txt``` files.
 - To finish this step and proceed to the next stage, press 'Enter' on an input space.
 #### Generating code
 - Based on the provided conditions, the system generates and displays the code.
