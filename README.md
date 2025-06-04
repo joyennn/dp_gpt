@@ -1,4 +1,5 @@
 # How to use `dp_gpt.py`
+```dp_gpt``` is a lightweight and intuitive Python module designed to support linguistic research by enabling users to extract sentence structures based on flexible, user-defined conditions with minimal code. This tool leverages dependency parsing to analyze sentence structure and allows researchers to filter sentences from large corpora using natural language queries. 
 
 ## Initial setting
 Clone the repository on Google Colab.
@@ -59,7 +60,10 @@ df2 = dp("example.txt", 100001, 200000)
 df3 = dp("example.txt", 200001, 300000)
 df4 = dp("example.txt", 300001, None)
 ```
-
+To check the dependency parsing result of a single sentence, simply enter the sentence itself instead of a filename.
+```python
+dp("This is a sample sentence.")
+```
 <br>
 
 ### (3) Preview the dependency parsed dataframe: ```preview()```
@@ -143,7 +147,8 @@ inclusion[2] = "df['deprel'] == 'root'"
 
 ### (5) Apply generated code to the dependency parsed dataframe: ```apply()```
 Generated codes ```inclusion``` & ```exclusion``` are applied to the dependency parsed dataframe ```df```.<br>
-Review the final filtered sentences and enter a filename (.txt | .csv) to save them.
+Review the final filtered sentences and enter a filename (.txt | .csv) to save them.<br> 
+"Exit" will terminate the chat without saving the result.
 ```python
 apply(df, inclusion, exclusion)
 ```
