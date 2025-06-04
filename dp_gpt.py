@@ -97,8 +97,8 @@ def dp(input_data, *args):
         df['head'] = df['head'].astype(int)
 
         print("\n[Dependency Parsing Result for Input Sentence:]\n")
-        print(df)
-        # return df
+        # print(df)
+        return df
 
     # (2) 파일 처리
     filename = input_data
