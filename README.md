@@ -6,10 +6,12 @@ Clone the repository on Google Colab.
 ```python
 !git clone https://github.com/joyennn/dp_gpt.git
 ```
-
-Install required libraries.
+Go to the cloned directory 'dp_gpt'.
 ```python
 %cd dp_gpt
+```
+Install required libraries.
+```python
 !pip install -r requirements.txt --quiet
 ```
 
