@@ -24,55 +24,6 @@ def size(filename):
 
 ##### dependency parsing #####
 
-# def dp(filename, *args):
-#     if len(args) == 0:
-#         start = 1
-#         end = 100000
-#     elif len(args) == 1:
-#         start = 1
-#         end = args[0]
-#     elif len(args) == 2:
-#         start = args[0]
-#         end = args[1]
-#     else:
-#         raise ValueError("The dp() function accepts a maximum of three arguments: filename, start, and end.")
-
-#     with open(filename, 'r', encoding='utf-8') as f:
-#         lines = f.read().splitlines()
-
-#     if end is None:
-#         selected_lines = lines[start - 1:]
-#     else:
-#         selected_lines = lines[start - 1 : end]
-
-#     all_tokens = []
-
-#     stanza.download('en', verbose=False)
-#     nlp = stanza.Pipeline(lang='en',
-#                           processors='tokenize,pos,lemma,depparse',
-#                           use_gpu=True,
-#                           verbose=False)
-
-#     for idx, sentence in enumerate(tqdm(selected_lines, desc="Dependency Parsing"), start=start):
-#         doc = nlp(sentence)
-#         doc_dict = doc.to_dict()
-#         for sentence_data in doc_dict:
-#             for token in sentence_data:
-#                 new_token = {"s_id": idx, **token}
-#                 all_tokens.append(new_token)
-
-#     total_sentences = len(selected_lines)
-#     print(f"\n\nA total of {total_sentences} sentences have been processed.")
-#     print(f"Processed sentences from {start} to {start + total_sentences - 1}.")
-
-#     df = pd.DataFrame(all_tokens)
-#     df = df.drop(columns=['feats', 'misc'], errors='ignore')
-#     df = df.dropna(subset=['head'])
-#     df['head'] = df['head'].astype(int)
-
-#     return df
-
-
 def dp(input_data, *args):
     stanza.download('en', verbose=False)
     nlp = stanza.Pipeline(lang='en',
@@ -80,7 +31,6 @@ def dp(input_data, *args):
                           use_gpu=True,
                           verbose=False)
 
-    # (1) 단일 문장 처리
     if not input_data.endswith(".txt"):
         sentence = input_data
         doc = nlp(sentence)
@@ -100,7 +50,6 @@ def dp(input_data, *args):
         # print(df)
         return df
 
-    # (2) 파일 처리
     filename = input_data
     if len(args) == 0:
         start = 1
@@ -313,59 +262,50 @@ def apply(df, inclusion, exclusion):
         except Exception as e:
             raise ValueError(f"Error reading {file_name}: {e}")
 
-    # 1. Inclusion 조건: s_id 그룹별 평가
-    valid_s_ids = set()  # inclusion 조건을 모두 만족하는 s_id 저장용 집합
-    grouped = df.groupby("s_id")  # s_id 기준으로 그룹화
+    valid_s_ids = set() 
+    grouped = df.groupby("s_id")
     for s_id, group in grouped:
-        satisfies_all = True  # 현재 그룹이 모든 inclusion 조건을 만족하는지 추적하는 변수
+        satisfies_all = True
         for inclusion_code in inclusion:
             eval_globals = {"pd": pd}
             if ".txt" in inclusion_code:
                 eval_globals["load_list"] = load_list
             try:
-                # 현재 그룹(group)에 대해 inclusion 조건 평가
                 result = eval(inclusion_code, {**eval_globals, "df": group})
             except Exception as e:
                 raise ValueError(f"Error evaluating inclusion code '{inclusion_code}' for s_id {s_id}: {e}")
-            # 평가 결과가 Boolean Series여야 함
             if isinstance(result, pd.Series) and result.dtype == bool:
-                # 그룹 내 어느 행이라도 조건을 만족하면 True로 간주
                 if not result.any():
-                    satisfies_all = False  # 하나라도 만족하는 행이 없으면 해당 그룹은 포함 대상 아님
+                    satisfies_all = False 
                     break
             else:
                 raise ValueError("Inclusion code must return a Boolean Series.")
         if satisfies_all:
-            valid_s_ids.add(s_id)  # 모든 inclusion 조건을 만족하면 해당 s_id를 저장
+            valid_s_ids.add(s_id)  
 
-    # inclusion 조건을 만족하는 그룹의 데이터만 추출
     inclusion_filtered_df = df[df["s_id"].isin(valid_s_ids)]
 
-    # 2. Exclusion 조건: s_id 그룹별 평가
-    final_s_ids = set()  # exclusion 조건에서 걸러지지 않은 s_id 저장용 집합
+    final_s_ids = set()  
     grouped_inclusion = inclusion_filtered_df.groupby("s_id")
     for s_id, group in grouped_inclusion:
-        exclude_group = False  # 현재 그룹이 배제 조건에 걸리는지 여부
+        exclude_group = False  
         for exclusion_code in exclusion:
             eval_globals = {"pd": pd}
             if ".txt" in exclusion_code:
                 eval_globals["load_list"] = load_list
             try:
-                # 현재 그룹(group)에 대해 exclusion 조건 평가
                 result = eval(exclusion_code, {**eval_globals, "df": group})
             except Exception as e:
                 raise ValueError(f"Error evaluating exclusion code '{exclusion_code}' for s_id {s_id}: {e}")
             if isinstance(result, pd.Series) and result.dtype == bool:
-                # 그룹 내 어느 행이라도 조건을 만족하면 그룹 전체를 배제
                 if result.any():
                     exclude_group = True
                     break
             else:
                 raise ValueError("Exclusion code must return a Boolean Series.")
         if not exclude_group:
-            final_s_ids.add(s_id)  # 배제 조건에 걸리지 않은 그룹의 s_id 저장
+            final_s_ids.add(s_id)  
 
-    # 최종적으로 inclusion과 exclusion 조건을 모두 반영한 결과 생성
     final_df = df[df["s_id"].isin(final_s_ids)]
     selected_sids = final_df['s_id'].unique()
     selected_tokens = df[df['s_id'].isin(selected_sids)]
