@@ -330,7 +330,6 @@ def apply(df, inclusion, exclusion):
                     exclude_group = True
                     break
             except Exception as e:
-                print(f"[Error] Exclusion code failed for s_id={s_id}: {e}")
                 continue
         if not exclude_group:
             final_s_ids.add(s_id)
