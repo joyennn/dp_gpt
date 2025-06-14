@@ -169,6 +169,7 @@ def condition_to_code(conditions, api_key):
 
               Convert the following natural language query exactly into a single line of plain Python code that serves as a condition to filter "df".
               Do not add any extra conditions or modify any names or identifiers in any way.
+              Generated code must return a Boolean Series.
               If the query references a .txt file (e.g., "file.txt"), you must call the load_list function with that exact file name (i.e. load_list("file.txt")) and then use the isin() method to check membership against the returned list.
               Do not wrap any identifier in load_list() unless it explicitly contains a .txt extension.
               When query is like "[COLUMN1] (when [COLUMN2] is [VALUE2]) is the same as [COLUMN3] (when [COLUMN4] is [VALUE4])", the code should be like "df[df['[COLUMN2]'] == '[VALUE2]']['[COLUMN1]'].isin(df[df['[COLUMN4]'] == '[VALUE4]']['[COLUMN3]'])".
