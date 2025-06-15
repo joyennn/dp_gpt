@@ -109,10 +109,8 @@ inclusion2, exclusion2 = chat("your_gpt_api_key")
 - If you respond with "yes" or "y"  to the question asking whether to save the generated code, the code is stored in the respective variables.
 - If you responds with "no" or "n" to this question, the chat() process restarts from the beginning without saving any previous records.
 #### Prompting
-- To improve accuracy in natural language to code conversion, use the square brackets "[ ]" to Column or Value.
+- To improve accuracy in natural language to code conversion, use the quotation marks "" or square brackets [ ] to Column or Value.
 - The complex conditions between query and code are predefined as: <br>
-**query**: "[COLUMN1] (when [COLUMN2] is [VALUE2]) is the same as [COLUMN3] (when [COLUMN4] is [VALUE4])"<br>
-**code**: ```df[df['[COLUMN2]'] == '[VALUE2]']['[COLUMN1]'].isin(df[df['[COLUMN4]'] == '[VALUE4]']['[COLUMN3]'])```
 #### Note
 - "Exit" will terminate the chat at any steps.
 - "Reset" will reset the chat to its initial state at any steps.
