@@ -32,7 +32,7 @@ All required files should be uploaded in the ```dp_gpt``` folder.
 ### (1) Checking file size: ```size()```
 If the raw data file you uploaded is named ```example.txt```, you can check the total number of sentences in the file.
 ```python
-size("example.txt")
+size("corpus.txt")
 ```
 <br>
 
