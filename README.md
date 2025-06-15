@@ -41,26 +41,26 @@ The raw data is dependency-parsed from stanza dependency parsing and assigned in
 When only the filename is provided as an argument, the parser will process up to 100,000 sentences by default.<br>
 If the runtime type in Colab is set to GPU, the processing speed increases. If not set, it defaults to CPU processing.
 ```python
-df = dp("example.txt")
+df = dp("corpus.txt")
 ```
 If a number is specified with the file, the parser will process sentences from the beginning of the file up to the given number.
 ```python
-df = dp("example.txt", 50000)
+df = dp("corpus.txt", 50000)
 ```
 If two numbers are specified with the file, the parser will process sentences from the first number (start) to the second number (end).
 ```python
-df = dp("example.txt", 50001, 60000)
+df = dp("corpus.txt", 50001, 60000)
 ```
 If a number and ```None``` are specified with the file, the parser will process sentences from the given number to the end.
 ```python
-df = dp("example.txt", 60001, None)
+df = dp("corpus.txt", 60001, None)
 ```
 To process more than 100,000 sentences, assign each parsed portion to different variables.
 ```python
-df1 = dp("example.txt", 100000)
-df2 = dp("example.txt", 100001, 200000)
-df3 = dp("example.txt", 200001, 300000)
-df4 = dp("example.txt", 300001, None)
+df1 = dp("corpus.txt", 100000)
+df2 = dp("corpus.txt", 100001, 200000)
+df3 = dp("corpus.txt", 200001, 300000)
+df4 = dp("corpus.txt", 300001, None)
 ```
 To check the dependency parsing result of a single sentence, simply enter the sentence itself instead of a filename.
 ```python
