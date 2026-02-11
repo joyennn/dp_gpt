@@ -4,7 +4,7 @@
 ## Initial setting
 Clone the repository on Google Colab.
 ```python
-!git clone https://github.com/(blind_for_review)/dp_gpt.git
+!git clone https://github.com/joyennn/dp_gpt.git
 ```
 Go to the cloned directory 'dp_gpt'.
 ```python
