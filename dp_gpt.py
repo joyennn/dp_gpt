@@ -1,8 +1,8 @@
 import stanza
 import pandas as pd
 from tqdm import tqdm
-from langchain.chat_models import ChatOpenAI
-from langchain.schema import SystemMessage, HumanMessage
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import SystemMessage, HumanMessage
 import sys
 import warnings
 import csv
