@@ -3,4 +3,4 @@ pandas
 tqdm
 langchain_community
 langchain-openai
-openai==0.28
+
