@@ -190,7 +190,7 @@ def condition_to_code(conditions, api_key):
         SystemMessage(content="You are a helpful assistant that generates error-free Python code."),
         HumanMessage(content=prompt)
     ]
-    response = llm(messages)
+    response = llm.invoke(messages)
     code = response.content.strip()
 
     if code.startswith("```"):
